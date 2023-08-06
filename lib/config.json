@@ -1,0 +1,159 @@
+{
+  "returnStatus": ["Original", "Amended"],
+  "bank": [
+    {
+      "name": "Bank of Uganda",
+      "branches": [
+        "Kampala Branch - BOU",
+        "Entebbe Branch - BOU",
+        "Jinja Branch - BOU",
+        "Mbarara Branch - BOU",
+        "Gulu Branch - BOU",
+        "Arua Branch - BOU",
+        "Mbale Branch - BOU",
+        "Fort Portal Branch - BOU",
+        "Lira Branch - BOU",
+        "Kabale Branch - BOU"
+      ]
+    },
+    {
+      "name": "Stanbic Bank",
+      "branches": [
+        "Kampala Branch - Stanbic",
+        "Entebbe Branch - Stanbic",
+        "Jinja Branch - Stanbic",
+        "Mbarara Branch - Stanbic",
+        "Gulu Branch - Stanbic",
+        "Arua Branch - Stanbic",
+        "Mbale Branch - Stanbic",
+        "Fort Portal Branch - Stanbic",
+        "Lira Branch - Stanbic",
+        "Kabale Branch - Stanbic"
+      ]
+    },
+    {
+      "name": "Centenary Bank",
+      "branches": [
+        "Kampala Branch - Centenary",
+        "Entebbe Branch - Centenary",
+        "Jinja Branch - Centenary",
+        "Mbarara Branch - Centenary",
+        "Gulu Branch - Centenary",
+        "Arua Branch - Centenary",
+        "Mbale Branch - Centenary",
+        "Fort Portal Branch - Centenary",
+        "Lira Branch - Centenary",
+        "Kabale Branch - Centenary"
+      ]
+    },
+    {
+      "name": "DFCU Bank",
+      "branches": [
+        "Kampala Branch - DFCU",
+        "Entebbe Branch - DFCU",
+        "Jinja Branch - DFCU",
+        "Mbarara Branch - DFCU",
+        "Gulu Branch - DFCU",
+        "Arua Branch - DFCU",
+        "Mbale Branch - DFCU",
+        "Fort Portal Branch - DFCU",
+        "Lira Branch - DFCU",
+        "Kabale Branch - DFCU"
+      ]
+    },
+    {
+      "name": "Equity Bank",
+      "branches": [
+        "Kampala Branch - Equity",
+        "Entebbe Branch - Equity",
+        "Jinja Branch - Equity",
+        "Mbarara Branch - Equity",
+        "Gulu Branch - Equity",
+        "Arua Branch - Equity",
+        "Mbale Branch - Equity",
+        "Fort Portal Branch - Equity",
+        "Lira Branch - Equity",
+        "Kabale Branch - Equity"
+      ]
+    },
+    {
+      "name": "Barclays Bank",
+      "branches": [
+        "Kampala Branch - Barclays",
+        "Entebbe Branch - Barclays",
+        "Jinja Branch - Barclays",
+        "Mbarara Branch - Barclays",
+        "Gulu Branch - Barclays",
+        "Arua Branch - Barclays",
+        "Mbale Branch - Barclays",
+        "Fort Portal Branch - Barclays",
+        "Lira Branch - Barclays",
+        "Kabale Branch - Barclays"
+      ]
+    },
+    {
+      "name": "Cairo International Bank",
+      "branches": [
+        "Kampala Branch - CIB",
+        "Entebbe Branch - CIB",
+        "Jinja Branch - CIB",
+        "Mbarara Branch - CIB",
+        "Gulu Branch - CIB",
+        "Arua Branch - CIB",
+        "Mbale Branch - CIB",
+        "Fort Portal Branch - CIB",
+        "Lira Branch - CIB",
+        "Kabale Branch - CIB"
+      ]
+    },
+    {
+      "name": "Diamond Trust Bank",
+      "branches": [
+        "Kampala Branch - DTB",
+        "Entebbe Branch - DTB",
+        "Jinja Branch - DTB",
+        "Mbarara Branch - DTB",
+        "Gulu Branch - DTB",
+        "Arua Branch - DTB",
+        "Mbale Branch - DTB",
+        "Fort Portal Branch - DTB",
+        "Lira Branch - DTB",
+        "Kabale Branch - DTB"
+      ]
+    },
+    {
+      "name": "Orient Bank",
+      "branches": [
+        "Kampala Branch - Orient",
+        "Entebbe Branch - Orient",
+        "Jinja Branch - Orient",
+        "Mbarara Branch - Orient",
+        "Gulu Branch - Orient",
+        "Arua Branch - Orient",
+        "Mbale Branch - Orient",
+        "Fort Portal Branch - Orient",
+        "Lira Branch - Orient",
+        "Kabale Branch - Orient"
+      ]
+    },
+    {
+      "name": "United Bank for Africa",
+      "branches": [
+        "Kampala Branch - UBA",
+        "Entebbe Branch - UBA",
+        "Jinja Branch - UBA",
+        "Mbarara Branch - UBA",
+        "Gulu Branch - UBA",
+        "Arua Branch - UBA",
+        "Mbale Branch - UBA",
+        "Fort Portal Branch - UBA",
+        "Lira Branch - UBA",
+        "Kabale Branch - UBA"
+      ]
+    }
+  ],
+  "services":[
+    
+
+  ]
+}
