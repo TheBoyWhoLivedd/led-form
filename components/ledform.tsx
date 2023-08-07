@@ -1,7 +1,13 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CaretSortIcon, CheckIcon, Cross2Icon } from "@radix-ui/react-icons";
+import {
+  CaretSortIcon,
+  CheckIcon,
+  Cross2Icon,
+  PlusIcon,
+  TrashIcon,
+} from "@radix-ui/react-icons";
 import { Control, useForm } from "react-hook-form";
 import * as z from "zod";
 
@@ -23,6 +29,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  useFormField,
 } from "@/components/ui/form";
 import {
   Select,
@@ -40,7 +47,7 @@ import {
 import { toast } from "@/components/ui/use-toast";
 import { DatePickerWithRange } from "./ui/dateRangePicker";
 import config from "@/lib/config.json";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useFieldArray } from "react-hook-form";
 
 const EntrySchema = z.object({
@@ -99,6 +106,22 @@ interface FieldProps {
   label: string;
   placeholder?: string;
 }
+interface MobileMoneyEntry {
+  numberOfTransactions: number;
+  amount: number;
+  transactionType: "Withdrawal" | "Receiving" | "Payment";
+}
+interface MobileMoneyEntryProps {
+  newEntry: MobileMoneyEntry;
+  setNewEntry: React.Dispatch<React.SetStateAction<MobileMoneyEntry>>;
+  append: (obj: MobileMoneyEntry) => void;
+}
+interface MobileMoneyEntryListProps {
+  fields: any[];
+  control: Control<z.infer<typeof FormSchema>>;
+  remove: (index: number) => void;
+}
+
 export function InputField({ control, name, label, placeholder }: FieldProps) {
   return (
     <FormField
@@ -118,12 +141,205 @@ export function InputField({ control, name, label, placeholder }: FieldProps) {
   );
 }
 
+export function MobileMoneyEntry({
+  newEntry,
+  setNewEntry,
+  append,
+}: MobileMoneyEntryProps) {
+  return (
+    <div className="md:grid md:grid-cols-7 gap-8">
+      <div className="col-span-2">
+        <FormItem>
+          <FormLabel>Number of transactions</FormLabel>
+          <FormControl>
+            <Input
+              placeholder="Number of transactions"
+              value={newEntry.numberOfTransactions}
+              onChange={(e) =>
+                setNewEntry({
+                  ...newEntry,
+                  numberOfTransactions:
+                    e.target.value === ""
+                      ? 0
+                      : isNaN(Number(e.target.value))
+                      ? newEntry.numberOfTransactions
+                      : parseInt(e.target.value),
+                })
+              }
+            />
+          </FormControl>
+        </FormItem>
+      </div>
+      <div className="col-span-2">
+        <FormItem>
+          <FormLabel>Amount</FormLabel>
+          <FormControl>
+            <Input
+              placeholder="Amount"
+              value={newEntry.amount}
+              onChange={(e) =>
+                setNewEntry({
+                  ...newEntry,
+                  amount:
+                    e.target.value === ""
+                      ? 0
+                      : isNaN(Number(e.target.value))
+                      ? newEntry.amount
+                      : parseFloat(e.target.value),
+                })
+              }
+            />
+          </FormControl>
+        </FormItem>
+      </div>
+      <div className="col-span-2">
+        <FormItem>
+          <FormLabel>Transaction Type</FormLabel>
+          <Select
+            onValueChange={(value) =>
+              setNewEntry({
+                ...newEntry,
+                transactionType: value as
+                  | "Withdrawal"
+                  | "Receiving"
+                  | "Payment",
+              })
+            }
+            value={newEntry.transactionType}
+            defaultValue={newEntry.transactionType}
+          >
+            <FormControl>
+              <SelectTrigger>
+                <SelectValue
+                  defaultValue={newEntry.transactionType}
+                  placeholder="Withdrawal, Receiving or Payment?"
+                />
+              </SelectTrigger>
+            </FormControl>
+            <SelectContent>
+              {["Withdrawal", "Receiving", "Payment"].map(
+                (returnType, index) => (
+                  <SelectItem key={index} value={returnType}>
+                    {returnType}
+                  </SelectItem>
+                )
+              )}
+            </SelectContent>
+          </Select>
+          <FormMessage />
+        </FormItem>
+      </div>
+      <div className="col-span-1 flex items-end">
+        <Button
+          type="button"
+          onClick={() => {
+            append({
+              numberOfTransactions: Number(newEntry.numberOfTransactions),
+              amount: Number(newEntry.amount),
+              transactionType: newEntry.transactionType as
+                | "Withdrawal"
+                | "Receiving"
+                | "Payment",
+            });
+            setNewEntry({
+              numberOfTransactions: 0,
+              amount: 0,
+              transactionType: "Withdrawal",
+            });
+          }}
+        >
+          <span className="hidden sm:inline">Add</span>
+          <PlusIcon className="ml-2 h-5 w-5 sm:ml-0" />
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+export function MobileMoneyEntryList({
+  fields,
+  control,
+  remove,
+}: MobileMoneyEntryListProps) {
+  return (
+    <div className="md:grid md:grid-cols-7 gap-8">
+      {fields.map((field, index) => (
+        <React.Fragment key={field.id}>
+          <div className="col-span-2">
+            <InputField
+              control={control}
+              name={
+                `entries.${index}.numberOfTransactions` as keyof z.infer<
+                  typeof FormSchema
+                >
+              }
+              label="Number of transactions"
+            />
+          </div>
+          <div className="col-span-2">
+            <InputField
+              control={control}
+              name={
+                `entries.${index}.amount` as keyof z.infer<typeof FormSchema>
+              }
+              label="Amount"
+            />
+          </div>
+          <div className="col-span-2">
+            <FormField
+              control={control}
+              name={
+                `entries.${index}.transactionType` as keyof z.infer<
+                  typeof FormSchema
+                >
+              }
+              render={({ field: { onChange, value } }) => (
+                <FormItem>
+                  <FormLabel>Transaction Type</FormLabel>
+                  {/* @ts-ignore */}
+                  <Select onValueChange={(v) => onChange(v)} value={value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Withdrawal, Receiving or Payment?" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {["Withdrawal", "Receiving", "Payment"].map(
+                        (returnType, index) => (
+                          <SelectItem key={index} value={returnType}>
+                            {returnType}
+                          </SelectItem>
+                        )
+                      )}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="col-span-1 flex items-end">
+            <Button
+              type="button"
+              variant="destructive"
+              onClick={() => remove(index)}
+            >
+              <span className="hidden sm:inline">Delete</span>
+              <TrashIcon className="ml-2 h-5 w-5 text-red-500 sm:ml-0" />
+            </Button>
+          </div>
+        </React.Fragment>
+      ))}
+    </div>
+  );
+}
+
 export function LedForm() {
   const [bankMenuOpen, setBankMenuOpen] = useState(false);
   const [branchMenuOpen, setBranchMenuOpen] = useState(false);
-  const [newEntry, setNewEntry] = useState({
-    numberOfTransactions: "",
-    amount: "",
+  const [newEntry, setNewEntry] = useState<MobileMoneyEntry>({
+    numberOfTransactions: 0,
+    amount: 0,
     transactionType: "Withdrawal",
   });
   const [selectedBank, setSelectedBank] = useState<BankType>(null);
@@ -539,164 +755,17 @@ export function LedForm() {
         <FormDescription className="text-xl font-bold tracking-tight sm:text-2xl text-center uppercase">
           Mobile Money Transactions
         </FormDescription>
-        <div className="md:grid md:grid-cols-7 gap-8">
-          {fields.map((field, index) => (
-            <>
-              <div className="col-span-2" key={field.id}>
-                <InputField
-                  control={form.control}
-                  name={
-                    `entries.${index}.numberOfTransactions` as keyof z.infer<
-                      typeof FormSchema
-                    >
-                  }
-                  label="Number of transactions"
-                />
-              </div>
-              <div className="col-span-2">
-                <InputField
-                  control={form.control}
-                  name={
-                    `entries.${index}.amount` as keyof z.infer<
-                      typeof FormSchema
-                    >
-                  }
-                  label="Amount"
-                />
-              </div>
-              <div className="col-span-2">
-                <FormField
-                  control={form.control}
-                  name={
-                    `entries.${index}.transactionType` as keyof z.infer<
-                      typeof FormSchema
-                    >
-                  }
-                  render={({ field: { onChange, value, ref } }) => (
-                    <FormItem>
-                      <FormLabel>Transaction Type</FormLabel>
-                      {/* @ts-ignore */}
-                      <Select onValueChange={(v) => onChange(v)} value={value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Withdrawal, Receiving or Payment?" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {["Withdrawal", "Receiving", "Payment"].map(
-                            (returnType, index) => (
-                              <SelectItem key={index} value={returnType}>
-                                {returnType}
-                              </SelectItem>
-                            )
-                          )}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className="col-span-1 flex items-end">
-                <Button type="button" onClick={() => remove(index)}>
-                  Delete Entry
-                </Button>
-              </div>
-            </>
-          ))}
-        </div>
+        <MobileMoneyEntryList
+          fields={fields}
+          control={form.control}
+          remove={remove}
+        />
         {/* Add Entry */}
-        <div className="md:grid md:grid-cols-7 gap-8">
-          <div className="col-span-2">
-            <FormItem>
-              <FormLabel>Number of transactions</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="Number of transactions"
-                  value={newEntry.numberOfTransactions}
-                  onChange={(e) =>
-                    setNewEntry({
-                      ...newEntry,
-                      numberOfTransactions: e.target.value,
-                    })
-                  }
-                />
-              </FormControl>
-            </FormItem>
-          </div>
-          <div className="col-span-2">
-            <FormItem>
-              <FormLabel>Amount</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="Amount"
-                  value={newEntry.amount}
-                  onChange={(e) =>
-                    setNewEntry({
-                      ...newEntry,
-                      amount: e.target.value,
-                    })
-                  }
-                />
-              </FormControl>
-            </FormItem>
-          </div>
-          <div className="col-span-2">
-            <FormItem>
-              <FormLabel>Transaction Type</FormLabel>
-              <Select
-                // disabled={loading}
-                onValueChange={(value) =>
-                  setNewEntry({ ...newEntry, transactionType: value })
-                }
-                value={newEntry.transactionType}
-                defaultValue={newEntry.transactionType}
-              >
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue
-                      defaultValue={newEntry.transactionType}
-                      placeholder="Withdrawal, Receiving or Payment?"
-                    />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {["Withdrawal", "Receiving", "Payment"].map(
-                    (returnType, index) => (
-                      <SelectItem key={index} value={returnType}>
-                        {returnType}
-                      </SelectItem>
-                    )
-                  )}
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          </div>
-          <div className="col-span-1 flex items-end">
-            <Button
-              type="button"
-              onClick={() => {
-                append({
-                  numberOfTransactions: Number(newEntry.numberOfTransactions),
-                  amount: Number(newEntry.amount),
-                  transactionType: newEntry.transactionType as
-                    | "Withdrawal"
-                    | "Receiving"
-                    | "Payment",
-                });
-                setNewEntry({
-                  numberOfTransactions: "",
-                  amount: "",
-                  transactionType: "Withdrawal",
-                });
-              }}
-            >
-              Add Entry
-            </Button>
-          </div>
-        </div>
-
+        <MobileMoneyEntry
+          newEntry={newEntry}
+          setNewEntry={setNewEntry}
+          append={append}
+        />
         <Button type="submit">Submit</Button>
       </form>
     </Form>
