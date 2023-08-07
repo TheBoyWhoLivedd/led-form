@@ -229,7 +229,7 @@ export function MobileMoneyEntry({
           <FormMessage />
         </FormItem>
       </div>
-      <div className="col-span-1 flex items-end">
+      <div className="col-span-1 flex items-end mt-2">
         <Button
           type="button"
           onClick={() => {
@@ -249,7 +249,7 @@ export function MobileMoneyEntry({
           }}
         >
           <span className="hidden sm:inline">Add</span>
-          <PlusIcon className="ml-2 h-5 w-5 sm:ml-0" />
+          <PlusIcon className="ml-0 h-5 w-5 sm:ml-2" />
         </Button>
       </div>
     </div>
@@ -318,14 +318,14 @@ export function MobileMoneyEntryList({
               )}
             />
           </div>
-          <div className="col-span-1 flex items-end">
+          <div className="col-span-1 flex items-end mt-2">
             <Button
               type="button"
               variant="destructive"
               onClick={() => remove(index)}
             >
               <span className="hidden sm:inline">Delete</span>
-              <TrashIcon className="ml-2 h-5 w-5 text-red-500 sm:ml-0" />
+              <TrashIcon className="ml-0 h-5 w-5 sm:ml-2" />
             </Button>
           </div>
         </React.Fragment>
